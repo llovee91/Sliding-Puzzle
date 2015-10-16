@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles.css">
+    <title>Sliding Puzzle</title>
+  </head>
+  <body>
+  <div id="slidingPuzzleGame">
+    <div id="gameInfoHeader">
+      <h1 id="gameTitle">Sliding Puzzle</h1>
+      <img src="http://i902.photobucket.com/albums/ac222/llovee_91/Pic.jpg" id="eightPuzzle">
+      <p id="gameRule"><span id="ruleLabel">Game Rule: </span><br>
+        The goal of the sliding puzzle is to arrange the blocks in your board to match the winning pattern. At least one block can be slide around at every step given that there is always an empty space somewhere on the puzzle board.</p><br><br>
+      <p id="howToPlay"><span id="controlRule">Control Keys: </span><br>
+        Player 1 could slide the block using W(up), A(left), S(down), and D(right).<br>
+        player 2 could slide the block using the arrow keys in their respective direction.
+      </p><br><br>
+      <p id="levelExplanation"><span id="puzzleSizeLevel">Puzzle Size: </span><br>
+        In a 3 x 3 puzzle board, players will be dealing with 8 numbered blocks and 1 empty block. <br>
+        In a 4 x 4 puzzle board, players will be dealing with 15 numbered blocks and 1 empty block.<br><br>
+      <p id="gameModeExplanation"><span id="gameModeLabel">Game Mode: </span><br>
+        Time: the "Time" mode allows the two players to compete against each other to see whose the first to finish. HOWEVER, there will be a shuffle happening every (a) 30 seconds for 3x3 and (b) 60 seconds for 4x4, so the players are not only competing against each other but they are also competing against the time. <br>
+        Step: the "Step mode allows the two players to compete against each other to see who finishes arranging the puzzle in the least amount of steps.
+      </p>
+    </div>
+
+    <div id="selectLevelFooter">
+      <h3 id="promptSelectLevel">Please select the puzzle size:</h3>
+      <button class="levelSelector "id="select3By3">3 x 3</button>
+      <button class="levelSelector "id="select4By4">4 x 4</button>
+    </div>
+
+    <div id="selectModeFooter">
+      <h3 id="promptSelectMode">Please select a game mode:</h3>
+      <button class="modeSelector" id="selectSpeed">Time Mode</button>
+      <button class="modeSelector" id="selectEfficiency">Step Mode</button>
+    </div>
+
+
+    <div class="gamePlayPage" id="gamePlayPage3By3">
+      <div class="infoBoard" id="infoBoard3By3">
+        <h2>Winning Pattern</h2>
+        <table class="winningCondition" id="goalIsLastBoxEmpty3By3">
+          <tr>
+            <td class="lastBoxEmpty3By3">1</td>
+            <td class="lastBoxEmpty3By3">2</td>
+            <td class="lastBoxEmpty3By3">3</td>
+          </tr>
+          <tr>
+            <td class="lastBoxEmpty3By3">4</td>
+            <td class="lastBoxEmpty3By3">5</td>
+            <td class="lastBoxEmpty3By3">6</td>
+          </tr>
+          <tr>
+            <td class="lastBoxEmpty3By3">7</td>
+            <td class="lastBoxEmpty3By3">8</td>
+            <td class="lastBoxEmpty3By3 emptyBlock"></td>
+          </tr>
+        </table>
+
+        <table class="winningCondition" id="goalIsMiddleBoxEmpty3By3">
+          <tr>
+            <td class="middleBoxEmpty3By3">1</td>
+            <td class="middleBoxEmpty3By3">2</td>
+            <td class="middleBoxEmpty3By3">3</td>
+          </tr>
+          <tr>
+            <td class="middleBoxEmpty3By3">8</td>
+            <td class="middleBoxEmpty3By3 emptyBlock"></td>
+            <td class="middleBoxEmpty3By3">4</td>
+          </tr>
+          <tr>
+            <td class="middleBoxEmpty3By3">7</td>
+            <td class="middleBoxEmpty3By3">6</td>
+            <td class="middleBoxEmpty3By3">5</td>
+          </tr>
+        </table>
+
+        <p class="thisModeNTime"><span>Game mode: &nbsp;</span>
+        <p class="gameModeDisplay"></p><br>
+        <p class="timer" id="timer3By3"></p></p><br>
+        <button class="mainMenu">Main Menu</button>
+        <button class="restartGame" id="restart3By3Game">Start Over</button>
+      </div>
+
+      <div class="player1Screen">
+        <h2>Player 1</h2>
+        <p class="player1CurrentMoveCount">Move Count: 0</p>
+        <table id="player1GameBoard3by3">
+          <tr>
+            <td class="player1Board3By3" value="1"></td>
+            <td class="player1Board3By3" value="2"></td>
+            <td class="player1Board3By3" value="3"></td>
+          </tr>
+          <tr>
+            <td class="player1Board3By3" value="8"></td>
+            <td class="player1Board3By3" value=""></td>
+            <td class="player1Board3By3" value="4"></td>
+          </tr>
+          <tr>
+            <td class="player1Board3By3" value="7"></td>
+            <td class="player1Board3By3" value="6"></td>
+            <td class="player1Board3By3" value="5"></td>
+          </tr>
+        </table>
+        <p class="player1FinishMessage"></p>
+      </div>
+
+      <div class="player2Screen">
+        <h2>Player 2</h2>
+        <p class="player2CurrentMoveCount">Move Count: 0</p>
+        <table id="player2GameBoard">
+          <tr>
+            <td class="player2Board3By3" value="1"></td>
+            <td class="player2Board3By3" value="2"></td>
+            <td class="player2Board3By3" value="3"></td>
+          </tr>
+          <tr>
+            <td class="player2Board3By3" value="8"></td>
+            <td class="player2Board3By3" value=""></td>
+            <td class="player2Board3By3" value="4"></td>
+          </tr>
+          <tr>
+            <td class="player2Board3By3" value="7"></td>
+            <td class="player2Board3By3" value="6"></td>
+            <td class="player2Board3By3" value="5"></td>
+          </tr>
+        </table>
+        <p class="player2FinishMessage"></p>
+      </div>
+    </div>
+
+    <div class="gamePlayPage" id="gamePlayPage4By4">
+      <div class="infoBoard" id="infoBoard4By4">
+        <h2>Winning Pattern</h2>
+        <table class="winningCondition" id="goalIsLastBoxEmpty4By4">
+          <tr>
+            <td class="lastBoxEmpty4By4">1</td>
+            <td class="lastBoxEmpty4By4">2</td>
+            <td class="lastBoxEmpty4By4">3</td>
+            <td class="lastBoxEmpty4By4">4</td>
+          </tr>
+          <tr>
+            <td class="lastBoxEmpty4By4">5</td>
+            <td class="lastBoxEmpty4By4">6</td>
+            <td class="lastBoxEmpty4By4">7</td>
+            <td class="lastBoxEmpty4By4">8</td>
+          </tr>
+          <tr>
+            <td class="lastBoxEmpty4By4">9</td>
+            <td class="lastBoxEmpty4By4">10</td>
+            <td class="lastBoxEmpty4By4">11</td>
+            <td class="lastBoxEmpty4By4">12</td>
+          </tr>
+          <tr>
+            <td class="lastBoxEmpty4By4">13</td>
+            <td class="lastBoxEmpty4By4">14</td>
+            <td class="lastBoxEmpty4By4">15</td>
+            <td class="lastBoxEmpty4By4 emptyBlock"></td>
+          </tr>
+        </table>
+        <p class="thisModeNTime">
+        <span>Game mode: &nbsp;</span><p class="gameModeDisplay"></p><br>
+        <p class="timer" id="timer4By4"></p>
+        </p><br>
+        <button class="mainMenu">Main Menu</button>
+        <button class="restartGame" id="restart4By4Game">Start Over</button>
+      </div>
+
+      <div class="player1Screen">
+        <h2>Player 1</h2>
+        <p class="player1CurrentMoveCount">Move Count: 0</p>
+        <table class="playerBoard4By4" id="player1GameBoard4by4">
+          <tr>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+          </tr>
+          <tr>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+          </tr>
+          <tr>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+          </tr>
+          <tr>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+            <td class="player1Board4By4"></td>
+          </tr>
+        </table>
+        <p class="player1FinishMessage"></p>
+      </div>
+
+      <div class="player2Screen">
+        <h2>Player 2</h2>
+        <p class="player2CurrentMoveCount">Move Count: 0</p>
+        <table class="playerBoard4By4" id="player2GameBoard4By4">
+          <tr>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+          </tr>
+          <tr>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+          </tr>
+          <tr>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+          </tr>
+          <tr>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+            <td class="player2Board4By4"></td>
+          </tr>
+        </table>
+        <p class="player2FinishMessage"></p>
+      </div>
+    </div>
+  </div>
+  <script src="scripts.js"></script>
+  </body>
+</html>

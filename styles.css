@@ -1,0 +1,186 @@
+body {
+  background-color: rgba(251,233,223,0.6);
+}
+
+#slidingPuzzleGame {
+  margin:20px 60px 20px 60px;
+  background-color: rgba(255,255,255, 0.7);
+}
+
+#gameInfoHeader {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+#gameInfoHeader span {
+  font-size: 20px;
+}
+
+#selectLevelFooter {
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 50px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+#selectModeFooter {
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 50px;
+  padding-bottom: 20px;
+  text-align: center;
+  display: none;
+}
+
+.levelSelector, .modeSelector {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+#eightPuzzle {
+  height: 100px;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+#gameTitle {
+  text-align: center;
+  font-weight: bolder;
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+#gamePlayPage3By3, #gamePlayPage4By4, #middleBoxEmpty3By3, #lastBoxEmpty3By3 {
+  display: none;
+}
+
+.infoBoard {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin:20px 60px 20px 60px;
+  background-color: rgb(254,251,249);
+}
+
+.infoBoard table {
+  margin: 0 auto;
+}
+
+
+.player1Screen, .player2Screen {
+  background-color: rgb(254,251,249);
+}
+
+.player1Screen {
+  float: left;
+  width: 49%;
+  text-align: center;
+  height:310px;
+}
+
+.player2Screen {
+  float: right;
+  width: 49%;
+  height: 310px;
+  text-align: center;
+}
+
+td {
+  height: 50px;
+  width: 50px;
+  font-size: 30px;
+  font-family: 'montserrat';
+  border: 2px solid black;
+  border-radius: 3px;
+  text-align: center;
+  background-color: white;
+}
+
+table {
+  border: 8px;
+  border-style: solid;
+  border-color: rgba(101, 51, 51,1);
+  border-spacing: 0;
+  border-collapse: collapse;
+  /*border-radius: 10px;
+  box-shadow: 0 0 0 10px rgba(101, 51, 51,1);*/
+}
+
+.winningCondition td{
+  height: 40px;
+  width: 40px;
+  font-size: 20px;
+}
+
+.playerBoard4By4 td {
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+}
+
+#goalIsLastBoxEmpty4By4 td {
+  height: 30px;
+  width: 30px;
+  font-size: 20px;
+}
+
+.emptyBlock {
+  background-color: rgb(155,117,81);
+}
+
+span {
+  font-weight: bolder;
+  font-family: 'montserrat';
+  font-size: 16px;
+}
+
+p, h1, h3, h2 {
+  font-family: 'montserrat';
+  font-size: 15px;
+  margin: 0px;
+}
+
+p {
+  display: inline-block;
+}
+
+button {
+  background-color: rgba(101, 51, 51,0.9);
+  color: white;
+  border-radius: 5px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+
+h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+.player1Screen table, .player2Screen table {
+  margin: 0 auto;
+}
+
+.thisModeNTime, .mainMenu, .restartGame {
+  margin-top: 5px;
+}
+
+.player1CurrentMoveCount, .player2CurrentMoveCount {
+  margin-bottom: 10px;
+}
+
+.player2FinishMessage, .player1FinishMessage {
+  color: rgb(3,25,119);
+  font-family: 'montserrat';
+  font-size: 30px;
+  font-weight: bolder;
+}
