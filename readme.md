@@ -1,22 +1,23 @@
 #Sliding Puzzle
 
-##Eight-Puzzle/Fifteen-Puzzle
+###Eight-Puzzle/Fifteen-Puzzle
 The sliding puzzle, or more commonly known as the 8-puzzle or 15-puzzle, is a game that challenges the players(or player) to arrange the puzzle to match the winning pattern in the least amount of steps or time.
 
 #To play
 [http://llovee91.github.io/Sliding-Puzzle/](http://llovee91.github.io/Sliding-Puzzle/) or download the files of this repo and open index.html.
 
-##Game Mode
-###Time Mode
+###Game Mode
+Time Mode
 In "Time" mode, the player who finishes arranging the puzzle WINS.
 To add on some excitements, the puzzle will restart every (1) 30 seconds for a puzzle size of 3x3 and (2) 60 seconds for a puzzle size of 4x4 until either of the player wins.
-###Step Mode
+
+Step Mode
 In "Step" mode, the player who finishes arraning the puzzle in the least amount of steps WINS.
 
-##Game Rule
+###Game Rule
 Players can only (1) move the puzzle pieces that are adjacent to the empty space (colored in light brown) and (2) move the puzzle pieces in the direction of the empty space.
 
-##Controls
+###Controls
 Player 1 slides the puzzle pieces using W(up), A(left), S(down), and D(right).
 Player 2 slides the puzzle pieces using the arrow keys in their respectively direction.
 
