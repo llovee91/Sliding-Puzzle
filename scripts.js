@@ -1,15 +1,16 @@
-// Hide the selectLevelFooter and show the selectModeFooter after the user selects a level/puzzle size; gameLevel stores the level the user chose.
+// Hide the select-level-footer and show the select-mode-footer after the user selects a level/puzzle size; gameLevel stores the level the user chose.
 var gameLevel = null;
-$('.levelSelector').each(function(){
+$('.level-selector').each(function(){
   $(this).click(function(){
-    if (this === $('#select3By3')[0]) {
+    //Check which level was selected by checking the id of the button
+    if ($(this).attr('id') === 'select-3x3') {
       gameLevel = "3By3"
     }
     else {
       gameLevel = "4By4"
     }
-  $('#selectLevelFooter').css('display','none');
-  $('#selectModeFooter').fadeIn('slow');
+  $('#select-level-footer').css('display','none');
+  $('#select-mode-footer').fadeIn('slow');
   })
 });
 
@@ -18,22 +19,26 @@ var elapsedTime = 0;
 var timeNShuffle = function() {
   elapsedTime++;
   $('.timer').text('Elapsed Time: ' + elapsedTime + ' sec.');
+  //Shuffle it every 30 seconds if the user chose time mode and a puzzle size of 3x3
   if (gameMode === "time" && gameLevel === "3By3") {
     if (elapsedTime % 30 === 0) {
       generateBoard();
       elapsedTime = 0;
     }
   }
+  //Shuffle it every 60 seconds if the user chose time mode and a puzzle size of 4x4
   else if (gameMode === "time" && gameLevel === "4By4") {
     if (elapsedTime % 60 === 0) {
       generateBoard();
       elapsedTime = 0;
     }
   }
+  //Restart the timer after every shuffle
   if (elapsedTime === 0) {
     $('.timer').text('Elapsed Time: ' + elapsedTime + ' sec.');
   }
 }
+//Update the elapsed time by 1 second every 1000 miliseconds
 var startTimer = function() {
   updateTime = setInterval(timeNShuffle, 1000);
 };
@@ -56,14 +61,16 @@ var isInversionsEven = function(randomArrangement) {
       };
     }
   }
+  // If inversion is even then return true;otherwise return false
   return (inversions % 2 === 0);
 };
 
-//Randomly generate a 4 by 4 puzzle board and store it into randomArrangement. The variable emptyBox holds the index of where the empty box would be at the beginning of the game.
+// Randomly generate a 4 by 4 puzzle board and store it into randomArrangement. The variable emptyBox holds the index of where the empty box would be at the beginning of the game. (Without checking its solvability)
 var randomArrangement = [];
 var emptyBox = null;
 var generate4By4 = function() {
   randomArrangement = [];
+  // Randomly select a number and assign it to the block
   $(boxContent4By4).each(function(index){
     temp = Math.floor(Math.random()*boxContent4By4.length);
     randomArrangement.push(boxContent4By4[temp]);
@@ -76,48 +83,51 @@ var generate4By4 = function() {
   return randomArrangement;
 };
 
-//Hide the gameInfoHeader and the selectModeFooter after the user selects a game mode. Depending on which puzzle size the user chose, show the corresponding game play page. gameMode stores the game mode the user chose.
+//Hide the info-header and the select-mode-footer after the user selects a game mode. Depending on which puzzle size the user chose, show the corresponding game play page. gameMode stores the game mode the user chose.
 var gameMode = null;
-$('.modeSelector').each(function() {
+$('.mode-selector').each(function() {
   $(this).click(function() {
-    if (this === $('#selectSpeed')[0]) {
+    // check if the button clicked by user has the id select-time
+    if ($(this).attr('id') === 'select-time') {
       gameMode = "time";
     }
     else {
       gameMode = "step";
     }
-    $('#selectModeFooter').css('display','none');
-    $('#gameInfoHeader').css('display','none');
+    $('#select-mode-footer').css('display','none');
+    $('#info-header').css('display','none');
+    // Display the screen corresponding to the puzzle size
     if (gameLevel === "3By3") {
-      $('#gamePlayPage3By3').fadeIn('slow');
+      $('#gameplay-screen-3x3').fadeIn('slow');
     }
     else {
-      $('#gamePlayPage4By4').fadeIn('slow');
+      $('#gameplay-screen-4x4').fadeIn('slow');
   }
   generateBoard();
   if (gameMode === "time") {
       startTimer();
   }
-})
+    })
 });
+
 
 //Create a constructor for the players
 var Players = function(Board3By3, Board4By4){
   this.emptyIndex = null,
   this.moveTillNow = 0,
-  this.finishState = null;
+  this.currentStatus = null;
   this.gameBoard3By3 = $(Board3By3),
   this.gameBoard4By4 = $(Board4By4)
 };
 
 //Create the 2 players using the Players constructor
-var player1 = new Players('.player1Board3By3','.player1Board4By4');
-var player2 = new Players('.player2Board3By3','.player2Board4By4');
+var player1 = new Players('#player1-board-3x3 td','#player1-board-4x4 td');
+var player2 = new Players('#player2-board-3x3 td','#player2-board-4x4 td');
 var players = [player1, player2];
 
 //Create 3 by 3 tables showing how the sliding board should be arranged in order to win (select from existing html elements). Randomly select either of the winning condition when a game starts
-var goalIsLastBoxEmpty3By3 = $('#goalIsLastBoxEmpty3By3');
-var goalIsMiddleBoxEmpty3By3 = $('#goalIsMiddleBoxEmpty3By3');
+var goalIsLastBoxEmpty3By3 = $('#last-block-empty-3x3');
+var goalIsMiddleBoxEmpty3By3 = $('#middle-block-empty-3x3');
 
 //Check to see does the emptyBox starts on an even row counting from the bottom
 var isEmptyBoxOnEvenRow = function(emptyBox) {
@@ -130,8 +140,8 @@ var isEmptyBoxOnEvenRow = function(emptyBox) {
 var goal = null;
 var generateBoard = function() {
   $(players).each(function(){
-    this.gameBoard4By4.removeClass('emptyBlock');
-    this.gameBoard3By3.removeClass('emptyBlock');
+    this.gameBoard4By4.removeClass('empty-block');
+    this.gameBoard3By3.removeClass('empty-block');
   });
   if (gameLevel === "3By3") {
     $(boxContent3By3).each(function(){
@@ -139,33 +149,36 @@ var generateBoard = function() {
       randomArrangement.push(boxContent3By3[temp]);
       boxContent3By3.splice(temp,1);
     });
+    // If inversion is even, then the puzzle is solvable if the winning goal is to have empty block ended up at the bottom right hand corner
     if (isInversionsEven(randomArrangement) === true ) {
       goalIsMiddleBoxEmpty3By3.css('display', 'none');
       goalIsLastBoxEmpty3By3.fadeIn('slow');
       goal = "lastBoxEmpty";
     }
+    // If inversion is odd, then the puzzle is solvable if the winning goal is to have the empty block ended up at the middle
     else if (isInversionsEven(randomArrangement) !== true) {
       goalIsLastBoxEmpty3By3.css('display','none');
       goalIsMiddleBoxEmpty3By3.fadeIn('slow');
       goal = "middleBoxEmpty";
     }
-
     player1.gameBoard3By3.each(function(index){
       $(this).text(randomArrangement[index]);
       $(player2.gameBoard3By3[index]).text(randomArrangement[index]);
       if (randomArrangement[index] === "") {
         player1.emptyIndex = index;
         player2.emptyIndex = index;
-        $(this).addClass('emptyBlock');
-        $(player2.gameBoard3By3[index]).addClass('emptyBlock');
+        $(this).addClass('empty-block');
+        $(player2.gameBoard3By3[index]).addClass('empty-block');
       }
 
     });
+    // Reassign the value to the arrays so it can be used to generate a new game when user clicks restart/main-menu
     boxContent3By3 = ['1','2','3','4','5','6','7','8',''];
     randomArrangement = [];
   };
   if (gameLevel === "4By4") {
     generate4By4();
+    // Generate a puzzle until it is solvable by checking the inversions and in what row does the empty block lies at
     while (isInversionsEven(randomArrangement) === isEmptyBoxOnEvenRow(emptyBox)) {
       inversions = 0;
       generate4By4();
@@ -177,19 +190,20 @@ var generateBoard = function() {
       if (randomArrangement[index] === "") {
         player1.emptyIndex = index;
         player2.emptyIndex = index;
-        $(this).addClass('emptyBlock');
-        $(player2.gameBoard4By4[index]).addClass('emptyBlock');
+        $(this).addClass('empty-block');
+        $(player2.gameBoard4By4[index]).addClass('empty-block');
       }
     });
     boxContent4By4 = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15',''];
     randomArrangement = [];
   }
+  // Show the timer if the user chose time mode
   if (gameMode === "time") {
-    $('.gameModeDisplay').text('Time');
+    $('.current-mode').text('Time');
     $('.timer').text('Elapsed Time: 0 sec.')
   }
   else {
-    $('.gameModeDisplay').text('Step');
+    $('.current-mode').text('Step');
   }
 };
 
@@ -206,18 +220,24 @@ Players.prototype.compareBlockValueNText = function(thisBlock) {
 //Compare the total steps each player takes to arranging the puzzle. Determine the winner and loser.
 var compareMoveCount = function() {
   if (player1.moveTillNow > player2.moveTillNow) {
-    $('.player1FinishMessage').text('You lost');
-    $('.player2FinishMessage').text('You won!');
+    announceWinner(player2FinishedMessage, player1FinishedMessage)
   }
   else if (player1.moveTillNow < player2.moveTillNow) {
-    $('.player1FinishMessage').text('You won');
-    $('.player2FinishMessage').text('You lost!');
+    announceWinner(player1FinishedMessage, player2FinishedMessage)
   }
   else {
-    $('.player1FinishMessage').text('Tied!');
-    $('.player2FinishMessage').text('Tied!');
+    $('.player1-finished-message').text('Tied!');
+    $('.player2-finished-message').text('Tied!');
   }
 };
+
+// Create a function that announces the winner and loser when a game ends
+player1FinishedMessage = $('.player1-finished-message')
+player2FinishedMessage = $('.player2-finished-message')
+var announceWinner = function(winMessage,loseMessage){
+  winMessage.text('You won!')
+  loseMessage.text('You lost!')
+}
 
 //Check if the player has finished arranging their board into the same as the shown in the example where (a)block 0 to block 7 or (b)block 0 to block 15 are arranged from smallest to bigger with the last box left empty.
 Players.prototype.completeLastBoxEmpty = function(currentGameBoard,thisBlock,nextBlock,lastBlock) {
@@ -228,30 +248,30 @@ Players.prototype.completeLastBoxEmpty = function(currentGameBoard,thisBlock,nex
     }
     if (thisBlock === lastBlock-1 && $(this[currentGameBoard][lastBlock]).text() === "") {
       if (gameMode === "time") {
-        if (this === player1 && player2.finishState !== true) {
-          this.finishState = true;
-          player2.finishState = false;
-          $('.player1FinishMessage').text('You won!');
-          $('.player2FinishMessage').text('You lost!');
+        if (this === player1 && player2.currentStatus !== true) {
+          this.currentStatus = true;
+          player2.currentStatus = false;
+          announceWinner(player1FinishedMessage, player2FinishedMessage)
           }
-        else if (this === player2 && player1.finishState !== true) {
-          this.finishState = true;
-          player1.finishState = false;
-          $('.player2FinishMessage').text('You won!');
-          $('.player1FinishMessage').text('You lost!');
+        else if (this === player2 && player1.currentStatus !== true) {
+          this.currentStatus = true;
+          player1.currentStatus = false;
+          announceWinner(player2FinishedMessage, player1FinishedMessage)
         }
           clearInterval(updateTime);
       }
       else if (gameMode === "step") {
+        // Inform the steps it took for the player to finish arranging
         if (this === player1) {
-          this.finishState = true;
-          $('.player1FinishMessage').text('You finished arranging in ' + this.moveTillNow + " steps!");
+          this.currentStatus = true;
+          $('.player1-finished-message').text('You finished arranging in ' + this.moveTillNow + " steps!");
         }
         else if (this === player2) {
-          this.finishState = true;
-          $('.player2FinishMessage').text('You finished arranging in ' + this.moveTillNow + " steps!");
+          this.currentStatus = true;
+          $('.player2-finished-message').text('You finished arranging in ' + this.moveTillNow + " steps!");
         }
-        if (player1.finishState === true && player2.finishState === true) {
+        // When both players are finished, compare the steps and announce the winner
+        if (player1.currentStatus === true && player2.currentStatus === true) {
           compareMoveCount();
         }
       }
@@ -266,30 +286,28 @@ Players.prototype.completeMiddleBoxEmpty = function(thisBlock) {
   }
   if (thisBlock === 8) {
     if (gameMode === "time") {
-      if (this === player1 && player2.finishState !== true) {
-        this.finishState = true;
-        player2.finishState = false;
-        $('.player1FinishMessage').text('You won!');
-        $('.player2FinishMessage').text('You lost!');
+      if (this === player1 && player2.currentStatus !== true) {
+        this.currentStatus = true;
+        player2.currentStatus = false;
+        announceWinner(player1FinishedMessage, player2FinishedMessage)
         }
-      else if (this === player2 && player1.finishState !== true) {
-        this.finishState = true;
-        player1.finishState = false;
-        $('.player2FinishMessage').text('You won!');
-        $('.player1FinishMessage').text('You lost!');
+      else if (this === player2 && player1.currentStatus !== true) {
+        this.currentStatus = true;
+        player1.currentStatus = false;
+        announceWinner(player2FinishedMessage, player1FinishedMessage)
       }
         clearInterval(updateTime);
     }
     else if (gameMode === "step") {
       if (this === player1) {
-        this.finishState = true;
-        $('.player1FinishMessage').text('You finished arranging in ' + this.moveTillNow + " steps!");
+        this.currentStatus = true;
+        $('.player1-finished-message').text('You finished arranging in ' + this.moveTillNow + " steps!");
       }
       else if (this === player2) {
-        this.finishState = true;
-        $('.player2FinishMessage').text('You finished arranging in ' + this.moveTillNow + " steps!");
+        this.currentStatus = true;
+        $('.player2-finished-message').text('You finished arranging in ' + this.moveTillNow + " steps!");
       }
-      if (player1.finishState === true && player2.finishState === true) {
+      if (player1.currentStatus === true && player2.currentStatus === true) {
         compareMoveCount();
       }
     }
@@ -311,41 +329,42 @@ Players.prototype.didPlayerWin = function() {
 
 //Update the movecount everytime a player moves
 Players.prototype.updateMoveCount = function() {
+  this.moveTillNow++;
   if (this === player1) {
-    $('.player1CurrentMoveCount').text('Move Count: ' + this.moveTillNow);
+    $('.player1-current-count').text('Move Count: ' + this.moveTillNow);
   }
   else if (this === player2) {
-    $('.player2CurrentMoveCount').text('Move Count: ' + this.moveTillNow);
+    $('.player2-current-count').text('Move Count: ' + this.moveTillNow);
   }
 };
 
+
 //Create functions which allows the players to move the numbered blocks to the left, right, up, or down. Note: the numbered block being moved will exchange positions with the empty block.
 Players.prototype.moveLeft = function(currentGameBoard, gridWidth) {
-  if(this.finishState === null) {
+  if(this.currentStatus === null) {
     if ((this.emptyIndex+1) % gridWidth !== 0) {
       temp = $(this[currentGameBoard][this.emptyIndex+1]).text();
       $(this[currentGameBoard][this.emptyIndex]).text(temp);
       $(this[currentGameBoard][this.emptyIndex+1]).text('');
-      $(this[currentGameBoard][this.emptyIndex]).removeClass('emptyBlock');
-      $(this[currentGameBoard][this.emptyIndex+1]).addClass('emptyBlock');
+      $(this[currentGameBoard][this.emptyIndex]).removeClass('empty-block');
+      $(this[currentGameBoard][this.emptyIndex+1]).addClass('empty-block');
       this.emptyIndex = this.emptyIndex+1;
-      this.moveTillNow++;
       this.updateMoveCount();
       this.didPlayerWin();
     }
   }
 };
 
+//LRFC: last row first column
 Players.prototype.moveUp = function(currentGameBoard, gridWidth, LRFC) {
-  if(this.finishState === null) {
+  if(this.currentStatus === null) {
     if (this.emptyIndex < LRFC) {
       temp = $(this[currentGameBoard][this.emptyIndex+gridWidth]).text();
       $(this[currentGameBoard][this.emptyIndex]).text(temp);
       $(this[currentGameBoard][this.emptyIndex+gridWidth]).text('');
-      $(this[currentGameBoard][this.emptyIndex]).removeClass('emptyBlock');
-      $(this[currentGameBoard][this.emptyIndex+gridWidth]).addClass('emptyBlock');
+      $(this[currentGameBoard][this.emptyIndex]).removeClass('empty-block');
+      $(this[currentGameBoard][this.emptyIndex+gridWidth]).addClass('empty-block');
       this.emptyIndex = this.emptyIndex+gridWidth;
-      this.moveTillNow++;
       this.updateMoveCount();
       this.didPlayerWin();
 
@@ -354,36 +373,36 @@ Players.prototype.moveUp = function(currentGameBoard, gridWidth, LRFC) {
 };
 
 Players.prototype.moveRight = function(currentGameBoard, gridWidth) {
-  if (this.finishState === null) {
+  if (this.currentStatus === null) {
     if (this.emptyIndex % gridWidth !== 0) {
         temp = $(this[currentGameBoard][this.emptyIndex-1]).text();
         $(this[currentGameBoard][this.emptyIndex]).text(temp);
         $(this[currentGameBoard][this.emptyIndex-1]).text('');
-        $(this[currentGameBoard][this.emptyIndex]).removeClass('emptyBlock');
-        $(this[currentGameBoard][this.emptyIndex-1]).addClass('emptyBlock');
+        $(this[currentGameBoard][this.emptyIndex]).removeClass('empty-block');
+        $(this[currentGameBoard][this.emptyIndex-1]).addClass('empty-block');
         this.emptyIndex = this.emptyIndex-1;
-        this.moveTillNow++;
         this.updateMoveCount();
         this.didPlayerWin();
     }
   }
 };
 
+//FRLC first row last column
 Players.prototype.moveDown = function(currentGameBoard, gridWidth, FRLC) {
-  if (this.finishState === null) {
+  if (this.currentStatus === null) {
     if (this.emptyIndex > FRLC) {
       temp = $(this[currentGameBoard][this.emptyIndex-gridWidth]).text();
       $(this[currentGameBoard][this.emptyIndex]).text(temp);
       $(this[currentGameBoard][this.emptyIndex-gridWidth]).text('');
-      $(this[currentGameBoard][this.emptyIndex]).removeClass('emptyBlock');
-      $(this[currentGameBoard][this.emptyIndex-gridWidth]).addClass('emptyBlock');
+      $(this[currentGameBoard][this.emptyIndex]).removeClass('empty-block');
+      $(this[currentGameBoard][this.emptyIndex-gridWidth]).addClass('empty-block');
       this.emptyIndex = this.emptyIndex-gridWidth;
-      this.moveTillNow++;
       this.updateMoveCount();
       this.didPlayerWin();
     }
   }
 };
+
 
 //add an event listener to the document. The control keys for player 1 are a,s,d, and w whereas the control keys for player 2 are left, right, up and down arrows.
 $(document).keydown(function(e) {
@@ -470,24 +489,24 @@ var clearGame = function() {
   elapsedTime = 0;
   $(players).each(function() {
     this.moveTillNow = 0;
-    this.finishState = null;
+    this.currentStatus = null;
     this.emptyIndex = null;
-    $(this.gameBoard3By3).removeClass('emptyBlock');
-    $(this.gameBoard4By4).removeClass('emptyBlock');
+    $(this.gameBoard3By3).removeClass('empty-block');
+    $(this.gameBoard4By4).removeClass('empty-block');
   });
   if (gameMode === "time") {
     clearInterval(updateTime);
   }
-  $('.player1CurrentMoveCount').text('Move Count: 0');
-  $('.player2CurrentMoveCount').text('Move Count: 0');
-  $('.player1FinishMessage').text('');
-  $('.player2FinishMessage').text('');
+  $('.player1-current-count').text('Move Count: 0');
+  $('.player2-current-count').text('Move Count: 0');
+  $('.player1-finished-message').text('');
+  $('.player2-finished-message').text('');
   $('.timer').text('');
 }
 
 
 //restart the game when user clicks on the button
-$('.restartGame').each(function() {
+$('.game-restart').each(function() {
   $(this).click(function(){
     clearGame();
     generateBoard();
@@ -498,11 +517,11 @@ $('.restartGame').each(function() {
 });
 
 //clear the game and navigate back to main menu
-$('.mainMenu').each(function(){
+$('.main-menu').each(function(){
   $(this).click(function(){
     clearGame();
-    $('.gamePlayPage').css('display','none');
-    $('#gameInfoHeader').fadeIn('fast');
-    $('#selectLevelFooter').fadeIn('fast');
+    $('.gameplay').css('display','none');
+    $('#info-header').fadeIn('fast');
+    $('#select-level-footer').fadeIn('fast');
   })
 });

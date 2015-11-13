@@ -2,23 +2,23 @@ body {
   background-color: rgba(251,233,223,0.6);
 }
 
-#slidingPuzzleGame {
+#main-container {
   margin:20px 60px 20px 60px;
   background-color: rgba(255,255,255, 0.7);
 }
 
-#gameInfoHeader {
+#info-header {
   padding-top: 10px;
   padding-bottom: 20px;
   margin-right: 50px;
   margin-left: 50px;
 }
 
-#gameInfoHeader span {
+#info-header span {
   font-size: 20px;
 }
 
-#selectLevelFooter {
+#select-level-footer {
   margin-left: 50px;
   margin-right: 50px;
   margin-bottom: 50px;
@@ -26,7 +26,7 @@ body {
   text-align: center;
 }
 
-#selectModeFooter {
+#select-mode-footer {
   margin-left: 50px;
   margin-right: 50px;
   margin-bottom: 50px;
@@ -35,30 +35,30 @@ body {
   display: none;
 }
 
-.levelSelector, .modeSelector {
+.level-selector, .mode-selector {
     font-size: 18px;
     margin-top: 10px;
 }
 
-#eightPuzzle {
+#example {
   height: 100px;
   display: block;
   margin: 0 auto;
   margin-bottom: 10px;
 }
 
-#gameTitle {
+#game-title {
   text-align: center;
   font-weight: bolder;
   font-size: 35px;
   margin-bottom: 10px;
 }
 
-#gamePlayPage3By3, #gamePlayPage4By4, #middleBoxEmpty3By3, #lastBoxEmpty3By3 {
+#gameplay-screen-3x3, #gameplay-screen-4x4 {
   display: none;
 }
 
-.infoBoard {
+.gameplay-info-nav {
   text-align: center;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -66,23 +66,23 @@ body {
   background-color: rgb(254,251,249);
 }
 
-.infoBoard table {
+.gameplay-info-nav table {
   margin: 0 auto;
 }
 
 
-.player1Screen, .player2Screen {
+.player1-screen, .player2-screen {
   background-color: rgb(254,251,249);
 }
 
-.player1Screen {
+.player1-screen {
   float: left;
   width: 49%;
   text-align: center;
   height:310px;
 }
 
-.player2Screen {
+.player2-screen {
   float: right;
   width: 49%;
   height: 310px;
@@ -110,25 +110,25 @@ table {
   box-shadow: 0 0 0 10px rgba(101, 51, 51,1);*/
 }
 
-.winningCondition td{
+.winning-goal-example td{
   height: 40px;
   width: 40px;
   font-size: 20px;
 }
 
-.playerBoard4By4 td {
+.players-board-4x4 td {
   height: 40px;
   width: 40px;
   font-size: 25px;
 }
 
-#goalIsLastBoxEmpty4By4 td {
+#last-block-empty-4x4 td {
   height: 30px;
   width: 30px;
   font-size: 20px;
 }
 
-.emptyBlock {
+.empty-block {
   background-color: rgb(155,117,81);
 }
 
@@ -166,19 +166,19 @@ h3 {
   font-size: 20px;
 }
 
-.player1Screen table, .player2Screen table {
+.player1-screen table, .player2-screen table {
   margin: 0 auto;
 }
 
-.thisModeNTime, .mainMenu, .restartGame {
+.current-mode-time, .main-menu, .game-restart {
   margin-top: 5px;
 }
 
-.player1CurrentMoveCount, .player2CurrentMoveCount {
+.player1-current-count, .player2-current-count {
   margin-bottom: 10px;
 }
 
-.player2FinishMessage, .player1FinishMessage {
+.player2-finished-message, .player1-finished-message {
   color: rgb(3,25,119);
   font-family: 'montserrat';
   font-size: 30px;
