@@ -10,7 +10,7 @@ The sliding puzzle, or more commonly known as the 8-puzzle or 15-puzzle, is a ga
 In "Time" mode, the player who finishes arranging the puzzle first WINS.
 To add on some excitements, the puzzle will restart every (1) 30 seconds for a puzzle size of 3x3 and (2) 60 seconds for a puzzle size of 4x4 until either of the player wins.
 
-In "Step" mode, the player who finishes arraning the puzzle in the least amount of steps WINS.
+In "Step" mode, the player who finishes arranging the puzzle in the least amount of steps WINS.
 
 ###Game Rule
 Players can only (1) move the puzzle pieces that are adjacent to the empty space (colored in light brown) and (2) move the puzzle pieces in the direction of the empty space.
